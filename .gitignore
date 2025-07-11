@@ -1,0 +1,42 @@
+# --- Python Virtual Environments ---
+.venv/
+venv/
+myenv/
+ENV/
+
+# --- Python Cache Files ---
+# Ignore byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Credentials & Secrets (CRITICAL) ---
+# Never commit your secret keys or user tokens.
+credentials/
+credentials_web/
+*.json
+
+# Ignore environment variables file
+.env
+uv.lock
+
+# --- Test-related Caches and Reports ---
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Temporary Test Files ---
+_test_*.py
+
+# --- Distribution / Packaging ---
+build/
+dist/
+*.egg-info/
+
+# --- IDE / Editor Specific ---
+# VSCode
+.vscode/
+
+# --- OS Specific ---
+# Windows
+Thumbs.db
