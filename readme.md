@@ -4,6 +4,9 @@ A standalone, runnable tool server that provides a complete set of functions for
 
 This server acts as the "hardware" or "limbs" of an AI agent, handling all the secure authentication and direct API calls to Google, while exposing a simple, clean interface.
 
+<img width="1919" height="1197" alt="Screenshot 2025-07-11 163625" src="https://github.com/user-attachments/assets/f658503d-9cb1-4628-ae87-ea0ecd3343ce" />
+
+
 ## Features
 
 - **Standalone & Executable:** Runs as a separate process, listening for tool call requests on standard I/O (`stdio`).
