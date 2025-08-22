@@ -1,5 +1,23 @@
-mcp
+# --- Core MCP Library ---
+# Provides the FastMCP class for the tool servers
 fastmcp
+mcp
+
+# --- Standard Google API Client (for Calendar & Gmail) ---
+# The official Google client libraries for older JSON/HTTP APIs
+google-api-python-client
 google-auth-oauthlib
 google-auth-httplib2
-google-api-python-client
+
+# --- Modern Google API Client (for Meet v2) ---
+# The high-level client for the Google Meet API
+google-apps-meet
+
+# Explicitly add the core dependencies for modern Google Cloud libraries.
+# grpcio is the transport layer for gRPC-based APIs like Meet v2.
+google-api-core
+grpcio
+
+# --- Utilities ---
+# For loading environment variables from the .env file
+python-dotenv

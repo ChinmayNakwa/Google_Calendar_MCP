@@ -31,29 +31,29 @@ This server exposes the following functions, which can be called by name:
 
 ### 1. Setup Google Cloud Credentials
 
-1.  Go to the [Google Cloud Console](https://console.cloud.google.com/).
-2.  Navigate to `APIs & Services > Credentials`.
-3.  Click **+ CREATE CREDENTIALS** -> **OAuth client ID**.
-4.  Select **Desktop app** for the Application type.
-5.  Click **DOWNLOAD JSON** and rename the downloaded file to `credentials.json`.
-6.  Place this file inside a `credentials/` directory in the project root.
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Navigate to `APIs & Services > Credentials`.
+3. Click **+ CREATE CREDENTIALS** -> **OAuth client ID**.
+4. Select **Desktop app** for the Application type.
+5. Click **DOWNLOAD JSON** and rename the downloaded file to `credentials.json`.
+6. Place this file inside a `credentials/` directory in the project root.
 
 ### 2. Install Dependencies
 
-1.  **Clone the repository and navigate into it.**
+1. **Clone the repository and navigate into it.**
 
-2.  **Create and activate a virtual environment:**
-    ```bash
-    python -m venv venv
-    # On Windows: venv\Scripts\activate
-    # On macOS/Linux: source venv/bin/activate
-    ```
+2. **Create and activate a virtual environment:**
+   ```bash
+   uv venv
+   source .venv/bin/activate  # On macOS/Linux
+   # On Windows: .venv\Scripts\activate
+   ```
 
-3.  **Install the required packages:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *(Ensure `requirements.txt` contains `mcp`, `google-api-python-client`, `google-auth-oauthlib`, etc.)*
+3. **Install the required packages:**
+   ```bash
+   uv pip install -r requirements.txt
+   ```
+   *(Ensure `requirements.txt` contains `mcp`, `google-api-python-client`, `google-auth-oauthlib`, etc.)*
 
 ## How to Run the Server
 
@@ -63,46 +63,51 @@ You can run the tool server directly from your terminal.
 python run_calendar_mcp.py
 ```
 
-The server will start and print  Starting MCP server 'GoogleCalendar' with transport 'stdio'.
+The server will start and print `Starting MCP server 'GoogleCalendar' with transport 'stdio'`.
 
 The very first time you run a command that requires calendar access, the server will trigger the Google OAuth flow:
-1.  Your web browser will open.
-2.  You must log in and grant the requested permissions.
-3.  A `token.json` file will be created in the `credentials/` folder.
+1. Your web browser will open.
+2. You must log in and grant the requested permissions.
+3. A `token.json` file will be created in the `credentials/` folder.
+
 This is a one-time process. Subsequent runs will use the saved token.
 
+## Docker Deployment
 
 ### How it Works
 
 The `Dockerfile` defines the steps to create an image:
-1.  It starts from a base Python image.
-2.  It sets up a working directory and copies the `requirements.txt` file.
-3.  It installs all Python dependencies.
-4.  It copies your application source code (`main.py`, `mcp_server/`, etc.).
-5.  **Crucially, it copies the `credentials/` folder (containing both `credentials.json` and your generated `token.json`) into the image.**
-6.  It exposes port 8000 and defines the command to start the Uvicorn server.
+1. It starts from a base Python image.
+2. It sets up a working directory and copies the `requirements.txt` file.
+3. It installs all Python dependencies using uv.
+4. It copies your application source code (`run_calendar_mcp.py`, `mcp_server/`, etc.).
+5. **Crucially, it copies the `credentials/` folder (containing both `credentials.json` and your generated `token.json`) into the image.**
+6. It exposes port 8000 and defines the command to start the MCP server.
 
 ### Building the Docker Image
 
-From the project's root directory, run the following command to build the image. Replace `mcp-server` with your desired image name.
+From the project's root directory, run the following command to build the image:
 
 ```bash
-docker build -t mcp-server .
+docker build -t google-calendar-mcp .
 ```
 
 ### Running the Docker Container
 
-Once the image is built, you can run it as a container. This command maps port 8000 inside the container to port 8000 on your local machine.
+Once the image is built, you can run it as a container:
 
 ```bash
-docker run -p 8000:8000 --env-file .env mcp-server
+docker run -p 8000:8000 --env-file .env google-calendar-mcp
 ```
 
 - `-p 8000:8000`: Maps the container's port 8000 to your host's port 8000.
 - `--env-file .env`: Securely passes the API keys from your local `.env` file into the container's environment.
 
+## Claude Desktop Integration
 
-## Edit this in claude_desktop_config.json
+Edit this in `claude_desktop_config.json`:
+
+```json
 {
   "mcpServers": {
     "GoogleCalendar": {
@@ -113,8 +118,11 @@ docker run -p 8000:8000 --env-file .env mcp-server
         "--rm",
         "-i",
         "-v", "${PWD}/credentials:/app/credentials",
-        "claude-calendar-tool"
+        "google-calendar-mcp"
       ]
     }
   }
 }
+```
+
+This configuration allows Claude Desktop to interact with your Google Calendar through the MCP server running in Docker, with proper credential mounting for secure authentication.
