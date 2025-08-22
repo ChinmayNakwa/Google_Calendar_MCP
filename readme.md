@@ -11,15 +11,6 @@ This server acts as the "hardware" or "limbs" of an AI agent, handling all the s
 - **Robust Toolset:** Provides a comprehensive set of tools for calendar management.
 - **JSON Interface:** Accepts and returns data in clean, easy-to-parse JSON format.
 
-## Provided Tools
-
-This server exposes the following functions, which can be called by name:
-
-- **`list_events(calendar_id, max_results, time_min)`**: Lists events from a calendar.
-- **`create_event(summary, start_datetime, end_datetime, ...)`**: Creates a new event.
-- **`get_event_by_id(event_id, calendar_id)`**: Retrieves a single event by its unique ID.
-- **`update_event(event_id, updated_summary, ...)`**: Updates an existing event.
-- **`delete_event(event_id, calendar_id)`**: Deletes an event.
 
 ## Setup and Installation
 
