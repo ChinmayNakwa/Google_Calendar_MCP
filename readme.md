@@ -18,7 +18,7 @@ This server acts as the "hardware" or "limbs" of an AI agent, handling all the s
 
 - Python 3.10+
 - A Google Account
-- A Google Cloud Platform project with the Google Calendar API enabled.
+- A Google Cloud Platform project with the Google Calendar/Meet/Mail API enabled.
 
 ### 1. Setup Google Cloud Credentials
 
